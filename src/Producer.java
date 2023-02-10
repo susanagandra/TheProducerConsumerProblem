@@ -1,20 +1,38 @@
-import java.util.Deque;
-import java.util.Queue;
+public class Producer implements Runnable {
+    private final Menu menu;
+    private volatile boolean available;
+    private int elementsToProduce;
 
-public class Producer implements Runnable{
-    private int numItem;
-    Container container;
-
-    public Producer(Container container, int numItem) {
-        this.numItem = numItem;
-        this.container = container;
+    public Producer(Menu menu, int elementsToProduce) {
+        this.menu = menu;
+        this.elementsToProduce = elementsToProduce;
+        available = true;
     }
 
     @Override
     public void run() {
+        produce();
+    }
 
-        for (int i = 0; i < numItem; i++) {
-            container.addPlate(PlatesMenu.randomPlate().toString());
+    public void produce() {
+        while (available && elementsToProduce > 0) {
+            String plate = PlatesMenu.randomPlate();
+            ThreadUtil.sleep(1000);
+            while (menu.isFull()) {
+                try {
+                    menu.waitOnFull();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
+                }
+            }
+            if (!available) {
+                break;
+            }
+            menu.add(plate);
+            elementsToProduce--;
+            menu.notifyAllForEmpty();
         }
+        System.out.println(Thread.currentThread().getName().concat(" has stopped working."));
     }
 }
