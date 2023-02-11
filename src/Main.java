@@ -15,11 +15,11 @@ public class Main {
         Thread t3 = new Thread(c1);
         t3.setName("Susana");
 
-        Consumer c2 = new Consumer(menu, 10);
+        Consumer c2 = new Consumer(menu, 15);
         Thread t4 = new Thread(c2);
         t4.setName("Rafael");
 
-        Consumer c3 = new Consumer(menu, 10);
+        Consumer c3 = new Consumer(menu, 15);
         Thread t5 = new Thread(c3);
         t5.setName("Nuno");
 

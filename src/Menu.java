@@ -1,67 +1,22 @@
-import java.util.Deque;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class Menu<T> {
+    BlockingQueue<T> menu;
 
-    private final Deque<T> container;
-    private final int maxSize;
-    private final Object FULL_DEQUE = new Object();
-    private final Object EMPTY_DEQUE = new Object();
-
-    Menu(int maxSize) {
-        this.container = new ConcurrentLinkedDeque<>();
-        this.maxSize = maxSize;
+    public Menu(int maxSize) {
+        this.menu = new LinkedBlockingDeque<>(maxSize);
     }
 
-    public boolean isFull() {
-        return container.size() == maxSize;
+    public void addPlate(T plate) throws InterruptedException {
+        menu.put(plate);
+        System.out.println(Thread.currentThread().getName().concat(" added ").concat(plate.toString()) + "\n" +
+                "The menu now has: ".concat(menu.toString()));
     }
 
-    public boolean isEmpty() {
-        return container.isEmpty();
-    }
-
-    public void waitOnFull() throws InterruptedException {
-        synchronized (FULL_DEQUE) {
-            FULL_DEQUE.wait();
-        }
-    }
-
-    public void waitOnEmpty() throws InterruptedException {
-        synchronized (EMPTY_DEQUE) {
-            EMPTY_DEQUE.wait();
-        }
-    }
-
-    public void notifyAllForFull() {
-        synchronized (FULL_DEQUE) {
-            FULL_DEQUE.notifyAll();
-        }
-    }
-
-    public void notifyAllForEmpty() {
-        synchronized (EMPTY_DEQUE) {
-            EMPTY_DEQUE.notifyAll();
-        }
-    }
-
-    public void add(T plate) {
-        synchronized (container) {
-            container.add(plate);
-            System.out.println(Thread.currentThread().getName().concat(" added ").concat(plate.toString()));
-            System.out.println("The menu now has: ".concat(container.toString()));
-        }
-    }
-
-    public void eat() {
-        synchronized (container) {
-            if (!container.isEmpty()) {
-                String plate = container.remove().toString();
-                System.out.println(Thread.currentThread().getName().concat(" ate ").concat(plate));
-                if (container.isEmpty()) {
-                    System.out.println("The menu is empty");
-                } else System.out.println("The menu now has: ".concat(container.toString()));
-            }
-        }
+    public void eat() throws InterruptedException {
+        String plate = menu.take().toString();
+        System.out.println(Thread.currentThread().getName().concat(" ate ").concat(plate) + "\n" +
+                "The menu now has: ".concat(menu.toString()));
     }
 }
