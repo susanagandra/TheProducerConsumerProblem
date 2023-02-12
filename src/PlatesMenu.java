@@ -1,16 +1,16 @@
 import java.util.Random;
 
 public enum PlatesMenu {
-    TUNA("Arroz com atum"),
-    STEAK("Bife à portuguesa"),
-    PIZZA("Pizza Napolitana"),
-    NODDLES("Noddles Cigala"),
-    FILET("Filet Mignon"),
-    HAMBURGER("Cheeseburguer"),
-    SUSHI("36 peças de sushi"),
-    RICE("Arroz de cabidela"),
-    POTATOES("Bacalhau à brás"),
-    PASTA("Massa à Carbonara");
+    P1("Arroz com atum"),
+    P2("Bife à portuguesa"),
+    P3("Pizza Napolitana"),
+    P4("Noddles Cigala"),
+    P5("Filet Mignon"),
+    P6("Cheeseburguer"),
+    P7("36 peças de sushi"),
+    P8("Arroz de cabidela"),
+    P9("Bacalhau à brás"),
+    P10("Massa à Carbonara");
 
     private final String plateName;
 

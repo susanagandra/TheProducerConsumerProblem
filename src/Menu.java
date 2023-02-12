@@ -1,4 +1,5 @@
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Menu<T> {
@@ -9,7 +10,7 @@ public class Menu<T> {
     private final Object EMPTY_DEQUE = new Object();
 
     Menu(int maxSize) {
-        this.container = new ConcurrentLinkedDeque<>();
+        this.container = new LinkedList<>();
         this.maxSize = maxSize;
     }
 
